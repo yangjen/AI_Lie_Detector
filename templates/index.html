@@ -27,7 +27,6 @@
     </script>
     <script src="https://unpkg.com/jquery"></script>
     <script src="https://surveyjs.azureedge.net/0.96.0/survey.jquery.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/bootstrap@3.3.7/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{url_for('static', filename='surveysjs/index.css')}}">    
     
     <!--
@@ -60,59 +59,37 @@
                     <div id="logs"></div>
                 </div>
             </div>
+            
+            <!----
             <div class="col-md-9">
-                <div class="col-md-9"> <!--style="min-height:35em;">-->
+                <div class="col-md-9">
                     <div class="row">
                         <strong>EMOTION TRACKING RESULTS</strong>
                     </div>
-                    <div class="row" ><!--style="visibility: hidden">-->
+                    <div class="row" >
                         <div class="col-md-4" id="results1" style="word-wrap:break-word;"></div>
                         <div class="col-md-4" id="results2" style="word-wrap:break-word;"></div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- This content is from Surveys -->
-        <div id="divStartQuiz" style="padding:50px">
-            <button class="btn-lg" onclick="showSurvey(); document.getElementById('divStartQuiz').style.display = 'none';">
-                <span>Start Quiz</span></button>
-        </div>
-        <div id="surveyElement"></div>
-        <div id="surveyResult"></div>  
+            <!---->
+            
+            <!-- This content is from Surveys -->
+            <div class="col-md-9">
+                <div id="divStartQuiz" style="padding:50px">
+                    <button class="btn-lg" onclick="showSurvey(); document.getElementById('divStartQuiz').style.display = 'none';">
+                        <span>Start Quiz</span></button>
+                </div>
+                <div id="surveyElement"></div>
+                <div id="surveyResult"></div>
+            </div>
+        </div>  
     </div>
     
     <!--
     <footer class="container-fluid">
         <p>Footer Text</p>
     </footer>
-    -->
-    
-    <!--
-    <script type='text/javascript'>
-    /* attach a submit handler to the form */
-    $("#titanic-form").submit(function(event) {
-
-      /* stop form from submitting normally */
-      event.preventDefault();
-
-      /* get the action attribute from the <form action=""> element */
-      var $form = $( this ),
-          payload = $form.serialize()
-          url = $form.attr( 'action' );
-
-      /* Send the data using post with element id name and name2*/
-      var posting = $.post( url, payload );
-
-      /* Alerts the results */
-      posting.done(function( data ) {
-        if (data.prediction >= 50) {
-            alert('Your probability of survival is: ' + data.prediction + '%\nYou probably would have made it!')
-        } else {
-            alert('Your probability of survival is: ' + data.prediction + '%\nYou probably would have sunk :(')
-        };
-      });
-    });
-    </script>
     -->
     
     <!-- GENERAL -->
@@ -134,7 +111,7 @@
             if (detector && !detector.isRunning) {
                 log_reset();
                 detector.start();
-                //xlabs_start();
+                xlabs_start();
             }
             log('#logs', "Clicked the start button");
         }
@@ -144,7 +121,7 @@
             if (detector && detector.isRunning) {
                 detector.removeEventListener();
                 detector.stop();
-                //xlabs_stop();
+                xlabs_stop();
             }
         }
         
@@ -153,7 +130,7 @@
             if (detector && detector.isRunning) {
                 detector.reset();
                 reset_results();
-                //xlabs_refresh();
+                xlabs_refresh();
             }
         };
 
@@ -280,15 +257,17 @@
                 //drawFeaturePoints(image, faces[0].featurePoints);
             }
             
-            //log('#results', "Appearance: " + JSON.stringify(faces[0].appearance));
-            //log('#results', "Emotions: " + JSON.stringify(faces[0].emotions, function(key, val) {
-            //  return val.toFixed ? Number(val.toFixed(0)) : val;
-            //}));
-            //log('#results', "Expressions: " + JSON.stringify(faces[0].expressions, function(key, val) {
-            //  return val.toFixed ? Number(val.toFixed(0)) : val;
-            //}));
-            //log('#results', "Emoji: " + faces[0].emojis.dominantEmoji);
-            //drawFeaturePoints(image, faces[0].featurePoints);
+            /*
+            log('#results', "Appearance: " + JSON.stringify(faces[0].appearance));
+            log('#results', "Emotions: " + JSON.stringify(faces[0].emotions, function(key, val) {
+              return val.toFixed ? Number(val.toFixed(0)) : val;
+            }));
+            log('#results', "Expressions: " + JSON.stringify(faces[0].expressions, function(key, val) {
+              return val.toFixed ? Number(val.toFixed(0)) : val;
+            }));
+            log('#results', "Emoji: " + faces[0].emojis.dominantEmoji);
+            drawFeaturePoints(image, faces[0].featurePoints);
+            //*/
           }
         });
 
@@ -391,6 +370,7 @@
         
         //document.getElementById("gaze_values").submit = submit_handler;
     </script>
+    
     <!-- Surveys.js local library -->
     <script type="text/javascript" src="{{url_for('static', filename='surveysjs/index.js')}}"></script>   
 </body>
