@@ -5,13 +5,13 @@ var json = {
     title: "Unleashing the true", showProgressBar: "bottom", showTimerPanel: "top", maxTimeToFinishPage: 10, maxTimeToFinish: 30,
     pages: [
         { questions: [
-             { type: "comment",  name: "question1", title: "How was your first job?"}
+             { type: "comment",  name: "question1", title: myQuestions[0]}
         ]},
          { questions: [ 
-            { type: "comment",  name: "question2", title: "Can you explain how amazing you find Machine Learning module?"}
+            { type: "comment",  name: "question2", title: myQuestions[1]}
          ]},
          {maxTimeToFinish: 15, questions: [
-            { type: "comment",  name: "question3", title: "Is there a person you are always jelous of?"}
+            { type: "comment",  name: "question3", title: myQuestions[2]}
         ]}
     ],
     completedHtml: "<h4><p>Thank you for completing the Quiz.</p><p>You will get the result shortly...<p></h4>"
