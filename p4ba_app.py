@@ -7,7 +7,8 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 
 @app.route("/", methods=["GET"])
 def form():
-    return render_template('index.html')
+    quests = ["Q1", "Q2", "Q3"]
+    return render_template('index.html', questions=quests)
 
 
 if __name__ == "__main__":

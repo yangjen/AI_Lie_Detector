@@ -21,6 +21,15 @@
     <!-- XLABS -->
     <script type="text/javascript" src="{{url_for('static', filename='xlabs/xlabs.js')}}"></script>
     
+    <!-- Survey JS -->
+    <script>
+        var myQuestions = {{ questions|tojson }};
+    </script>
+    <script src="https://unpkg.com/jquery"></script>
+    <script src="https://surveyjs.azureedge.net/0.96.0/survey.jquery.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='surveysjs/index.css')}}">    
+    
     <!--
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     -->
@@ -63,7 +72,14 @@
                 </div>
             </div>
         </div>
-    <div>
+        <!-- This content is from Surveys -->
+        <div id="divStartQuiz" style="padding:50px">
+            <button class="btn-lg" onclick="showSurvey(); document.getElementById('divStartQuiz').style.display = 'none';">
+                <span>Start Quiz</span></button>
+        </div>
+        <div id="surveyElement"></div>
+        <div id="surveyResult"></div>  
+    </div>
     
     <!--
     <footer class="container-fluid">
@@ -375,5 +391,7 @@
         
         //document.getElementById("gaze_values").submit = submit_handler;
     </script>
+    <!-- Surveys.js local library -->
+    <script type="text/javascript" src="{{url_for('static', filename='surveysjs/index.js')}}"></script>   
 </body>
 </html>
