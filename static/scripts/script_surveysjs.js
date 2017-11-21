@@ -1,18 +1,25 @@
 Survey.Survey.cssType = "bootstrap";
-Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
+Survey.defaultBootstrapCss.navigationButton = "btn btn-primary";
 
 var json = {
-    title: "Unleashing the true", showProgressBar: "bottom", showTimerPanel: "top", maxTimeToFinishPage: 10, maxTimeToFinish: 30,
+    //title: "", showProgressBar: "bottom", showTimerPanel: "bottom", maxTimeToFinishPage: 10, maxTimeToFinish: 30,
+    title: "", maxTimeToFinishPage: 10, maxTimeToFinish: 30,
     pages: [
         { questions: [
-             { type: "comment",  name: "question1", title: myQuestions[0]}
-        ]},
-         { questions: [ 
-            { type: "comment",  name: "question2", title: myQuestions[1]}
-         ]},
-         {maxTimeToFinish: 15, questions: [
-            { type: "comment",  name: "question3", title: myQuestions[2]}
-        ]}
+            //{ type: "comment",  name: "question1", title: myQuestions[0]}
+            { type: "html", name: "question1", html: "<h2>"+myQuestions[0]+"</h2><br /><br /><br />"}
+        ]
+        },
+        { questions: [ 
+            //{ type: "comment",  name: "question2", title: myQuestions[1]}
+            { type: "html", name: "question1", html: "<h2>"+myQuestions[1]+"</h2><br /><br /><br />"}
+        ]
+        },
+        { maxTimeToFinish: 15, questions: [
+            //{ type: "comment",  name: "question3", title: myQuestions[2]}
+            { type: "html", name: "question1", html: "<h2>"+myQuestions[2]+"</h2><br /><br /><br />"}
+        ]
+        }
     ],
     completedHtml: "<h4><p>Thank you for completing the Quiz.</p><p>You will get the result shortly...<p></h4>"
 };

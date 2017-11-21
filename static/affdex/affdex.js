@@ -239,13 +239,18 @@ affdex.CameraDetector = function(element, imgW, imgH, faceMode) {
   var cameraStream = null;
   var width = imgW || 640;
   var height = imgH || 480;
-  var startTimeStamp = (new Date()).getTime() / 1000;
+  var startTimeStamp = (new Date()).getTime();
+  var currentTimeStamp = startTimeStamp;
   var docElement = element || document.createElement("div");
   var canvasElement = null;
   var canvasContext = null;
   var adapterJSVersion = "adapter-1.4.0.js";
   
-  //window.alert("width="+width+"   height="+height)
+  //window.alert("width="+width+"   height="+height);
+  
+  self.getCurrentTimeStamp = function() {
+    return currentTimeStamp;
+  };
   
   self.faceDetectorMode = (typeof faceMode == 'undefined') ? affdex.FaceDetectorMode.LARGE_FACES : faceMode;
   
@@ -254,7 +259,7 @@ affdex.CameraDetector = function(element, imgW, imgH, faceMode) {
     self.videoElement.id = "face_video";
     self.videoElement.autoplay = true;
     docElement.appendChild(self.videoElement);
-    startTimeStamp = (new Date()).getTime() / 1000;
+    startTimeStamp = (new Date()).getTime();
     canvasElement = document.createElement("canvas");
     canvasElement.id = "face_video_canvas";
     canvasElement.width = width;
@@ -281,8 +286,9 @@ affdex.CameraDetector = function(element, imgW, imgH, faceMode) {
       canvasContext.clearRect(0, 0, canvasElement.width, canvasElement.height);
       canvasContext.drawImage(self.videoElement, 0, 0, width, height);
       var imgData = canvasContext.getImageData(0, 0, canvasElement.width, canvasElement.height);
-      var currentTimeStamp = (new Date()).getTime() / 1000;
-      process(imgData, currentTimeStamp - startTimeStamp);
+      currentTimeStamp = (new Date()).getTime();
+      process(imgData, (currentTimeStamp - startTimeStamp)/1000);
+      //process(imgData, currentTimeStamp); // this never worked :(
     }
   };
 

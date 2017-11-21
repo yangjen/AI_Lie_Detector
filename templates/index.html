@@ -27,7 +27,8 @@
     </script>
     <script src="https://unpkg.com/jquery"></script>
     <script src="https://surveyjs.azureedge.net/0.96.0/survey.jquery.js"></script>
-    <link rel="stylesheet" href="{{url_for('static', filename='surveysjs/index.css')}}">    
+    <link rel="stylesheet" href="{{url_for('static', filename='surveysjs/index.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='surveysjs/timer.css')}}">
     
     <!--
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -42,46 +43,71 @@
     
     <div class="container-fluid">
         <div class="row">
+            <!-- Camera -->
             <div class="col-md-3">
                 <div>
-                    <strong>CAMERA</strong>
+                    <h5>CAMERA</h5>
+                    <div id="affdex_elements" style="width:220px;height:170px;"></div>
                 </div>
-                <div id="affdex_elements" style="width:220px;height:170px;"></div>
-                
                 <div class="btn-group btn-group">
-                    <button id="start" type="button" class="btn btn-success" style="min-width:100px;" onclick="btn_start()">Start</button>
-                    <button id="stop"  type="button" class="btn btn-danger"  style="min-width:100px;" onclick="btn_stop()">Stop</button>
+                    <button id="start" type="button" class="btn btn-success" style="min-width:100px;" onclick="btn_camera_start()">Start</button>
+                    <button id="stop"  type="button" class="btn btn-danger"  style="min-width:100px;" onclick="btn_camera_stop()">Stop</button>
                     <!--<button id="reset" onclick="onReset()">Reset</button>-->
                 </div>
-                <div style="height:30px"></div>
                 <div>
-                    <strong>LOG</strong>
-                    <div id="logs"></div>
+                    <div style="height:30px"></div>
+                    <h5>CAMERA LOG</h5>
+                    <div id="camera_log"></div>
                 </div>
             </div>
             
-            <!----
+            <!-- Content -->
             <div class="col-md-9">
-                <div class="col-md-9">
-                    <div class="row">
-                        <strong>EMOTION TRACKING RESULTS</strong>
-                    </div>
-                    <div class="row" >
-                        <div class="col-md-4" id="results1" style="word-wrap:break-word;"></div>
-                        <div class="col-md-4" id="results2" style="word-wrap:break-word;"></div>
-                    </div>
-                </div>
-            </div>
-            <!---->
-            
-            <!-- This content is from Surveys -->
-            <div class="col-md-9">
-                <div id="divStartQuiz" style="padding:50px">
-                    <button class="btn-lg" onclick="showSurvey(); document.getElementById('divStartQuiz').style.display = 'none';">
-                        <span>Start Quiz</span></button>
+                <div id="divStartQuiz" style="padding:0px 50px">
+                    <p>
+                        - You will be presented with 3 simple questions.<br />
+                        - You have to answer 2 of them with the truth and 1 with a lie.<br />
+                        - You will have only 10 seconds to answer. <br />
+                        - After you finish, the algorithm will try to guess in which question you lied. <br />
+                        <br />
+                        Do you really think that you can fool a neural network? <br />
+                    </p>
+                    <div style="height:30px"></div>
+                    <button id="btn-lg" type="button" class="btn btn-primary" style="min-width:200px;" onclick="btn_survey_start()">Give it a try !</button>
                 </div>
                 <div id="surveyElement"></div>
                 <div id="surveyResult"></div>
+            </div>
+            
+            <!-- Affdex Results -->
+            <div class="col-md-9" style="min-height:100px;background-color:#00FF00;display:none;">
+                <div class="col-md-9">
+                    <div class="row">
+                        <h5>EMOTION TRACKING RESULTS</h5>
+                    </div>
+                    <div class="row" >
+                        <div class="col-md-4" id="aff_res1" style="word-wrap:break-word;"></div>
+                        <div class="col-md-4" id="aff_res2" style="word-wrap:break-word;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Logs -->
+            <div class="col-md-9" style="min-height:100px;background-color:#FFFF00;display:visible;">
+                <div class="col-md-9">
+                    <div class="row">
+                        <h5>TRACKING LOG</h5>
+                    </div>
+                    <div class="row">
+                        <textarea id="log_affdex" rows="3" cols="100"></textarea>
+                    </div>
+                    <div class="row">
+                        <textarea id="log_xlabs" rows="3" cols="100"></textarea>
+                    </div>
+                    <div class="row">
+                        <textarea id="log_events" rows="3" cols="100"></textarea>
+                    </div>
+                </div>
             </div>
         </div>  
     </div>
@@ -92,286 +118,25 @@
     </footer>
     -->
     
-    <!-- GENERAL -->
+    <!-- VARIABLES -->
     <script type="text/javascript">
-        function log(node_name, msg) {
-            $(node_name).append("<span>" + msg + "</span><br />")
-        }
-        
-        function log_reset() {
-            $("#logs").html("");
-        }
-        
-        function reset_results() {
-            $('#results1').html("");
-            $('#results2').html("");
-        }
-        
-        function btn_start() {
-            if (detector && !detector.isRunning) {
-                log_reset();
-                detector.start();
-                xlabs_start();
-            }
-            log('#logs', "Clicked the start button");
-        }
-        
-        function btn_stop() {
-            log('#logs', "Clicked the stop button");
-            if (detector && detector.isRunning) {
-                detector.removeEventListener();
-                detector.stop();
-                xlabs_stop();
-            }
-        }
-        
-        function btn_reset() {
-            log('#logs', "Clicked the reset button");
-            if (detector && detector.isRunning) {
-                detector.reset();
-                reset_results();
-                xlabs_refresh();
-            }
-        };
-
+        var gTrackCamera = true;
+        var gShowAffRes = false;
+        var gTrackAff = true;
+        var gTrackXlabs = true;
+        var gTrackButtons = true;
     </script>
+    
+    <!-- GENERAL -->
+    <script type="text/javascript" src="{{url_for('static', filename='scripts/script_general.js')}}"></script>
     
     <!-- AFFECTIVA -->
-    <script type="text/javascript">
-        // SDK Needs to create video and canvas nodes in the DOM in order to function
-        // Here we are adding those nodes a predefined div.
-        var divRoot = $("#affdex_elements")[0];
-        var width = 200;//640;
-        var height = 150;//480;
-        var faceMode = affdex.FaceDetectorMode.LARGE_FACES;
-        var showPoints = false;
-        
-        //Construct a CameraDetector and specify the image width / height and face detector mode.
-        var detector = new affdex.CameraDetector(divRoot, width, height, faceMode);
-
-        //Enable detection of all Expressions, Emotions and Emojis classifiers.
-        detector.detectAllEmotions();
-        detector.detectAllExpressions();
-        detector.detectAllEmojis();
-        detector.detectAllAppearance();
-
-        //Add a callback to notify when the detector is initialized and ready for running.
-        detector.addEventListener("onInitializeSuccess", function() {
-          log('#logs', "AFF: The detector reports initialized");
-          
-          //Display canvas instead of video feed because we want to draw the feature points on it
-          if (showPoints) {
-              $("#face_video_canvas").css("display", "block");
-              $("#face_video").css("display", "none");
-          }
-        });
-        
-        //Add a callback to notify when camera access is allowed
-        detector.addEventListener("onWebcamConnectSuccess", function() {
-          log('#logs', "AFF: Webcam access allowed");
-        });
-
-        //Add a callback to notify when camera access is denied
-        detector.addEventListener("onWebcamConnectFailure", function() {
-          log('#logs', "AFF: Webcam access denied");
-          console.log("Webcam access denied");
-        });
-
-        //Add a callback to notify when detector is stopped
-        detector.addEventListener("onStopSuccess", function() {
-          log('#logs', "AFF: The detector reports stopped");
-          //reset_results();
-        });
-
-        //Add a callback to receive the results from processing an image.
-        //The faces object contains the list of the faces detected in an image.
-        //Faces object contains probabilities for all the different expressions, emotions and appearance metrics
-        detector.addEventListener("onImageResultsSuccess", function(faces, image, timestamp) {
-          reset_results();
-          log('#results1', "Timestamp: " + timestamp.toFixed(2) + " [s]");
-          log('#results1', "Number of faces: " + faces.length);
-          
-          if (faces.length > 0) {
-            if (false) {
-                log('#results1', "Appearance: " + JSON.stringify(faces[0].appearance));
-                log('#results1', "Emotions: " + JSON.stringify(faces[0].emotions, function(key, val) {
-                  return val.toFixed ? Number(val.toFixed(0)) : val;
-                }));
-                log('#results1', "Expressions: " + JSON.stringify(faces[0].expressions, function(key, val) {
-                  return val.toFixed ? Number(val.toFixed(0)) : val;
-                }));
-                log('#results1', "Emoji: " + faces[0].emojis.dominantEmoji);
-                drawFeaturePoints(image, faces[0].featurePoints);
-            }
-            else {
-                log('#results1', "");
-                log('#results1', "Appearance:");
-                aux_str = JSON.stringify(faces[0].appearance);
-                aux_str = aux_str.substring(1,aux_str.length-1);
-                aux_arr = aux_str.split(",");
-                for (var i in aux_arr) {
-                  txt = aux_arr[i];
-                  txt_arr = txt.split(":");
-                  txt_arr[0] = txt_arr[0].substring(1,txt_arr[0].length-1);
-                  
-                  if (txt_arr[0] == 'age'){
-                    //txt_arr[1] = "68";
-                  }
-                  
-                  log('#results1', "&nbsp&nbsp&nbsp&nbsp" + txt_arr[0] + ": " + txt_arr[1]);
-                }
-                
-                log('#results1', "");
-                log('#results1', "Emotions:");
-                aux_str = JSON.stringify(faces[0].emotions, function(key, val) {
-                  return val.toFixed ? Number(val.toFixed(0)) : val;
-                });
-                aux_str = aux_str.substring(1,aux_str.length-1);
-                aux_arr = aux_str.split(",");
-                for (var i in aux_arr) {
-                  txt = aux_arr[i];
-                  txt_arr = txt.split(":");
-                  txt_arr[0] = txt_arr[0].substring(1,txt_arr[0].length-1);
-                  
-                  log('#results1', "&nbsp&nbsp&nbsp&nbsp" + txt_arr[0] + ": " + txt_arr[1]);
-                }
-                
-                log('#results2', "");
-                log('#results2', "Expressions:");
-                aux_str = JSON.stringify(faces[0].expressions, function(key, val) {
-                  return val.toFixed ? Number(val.toFixed(0)) : val;
-                });
-                aux_str = aux_str.substring(1,aux_str.length-1);
-                aux_arr = aux_str.split(",");
-                for (var i in aux_arr) {
-                  txt = aux_arr[i];
-                  txt_arr = txt.split(":");
-                  txt_arr[0] = txt_arr[0].substring(1,txt_arr[0].length-1);
-                  
-                  log('#results2', "&nbsp&nbsp&nbsp&nbsp" + txt_arr[0] + ": " + txt_arr[1]);
-                }
-                
-                log('#results1', "");
-                log('#results1', "Emoji: " + faces[0].emojis.dominantEmoji);
-                
-                //drawFeaturePoints(image, faces[0].featurePoints);
-            }
-            
-            /*
-            log('#results', "Appearance: " + JSON.stringify(faces[0].appearance));
-            log('#results', "Emotions: " + JSON.stringify(faces[0].emotions, function(key, val) {
-              return val.toFixed ? Number(val.toFixed(0)) : val;
-            }));
-            log('#results', "Expressions: " + JSON.stringify(faces[0].expressions, function(key, val) {
-              return val.toFixed ? Number(val.toFixed(0)) : val;
-            }));
-            log('#results', "Emoji: " + faces[0].emojis.dominantEmoji);
-            drawFeaturePoints(image, faces[0].featurePoints);
-            //*/
-          }
-        });
-
-        //Draw the detected facial feature points on the image
-        function drawFeaturePoints(img, featurePoints) {
-            if (showPoints) {
-                var contxt = $('#face_video_canvas')[0].getContext('2d');
-                var hRatio = contxt.canvas.width / img.width;
-                var vRatio = contxt.canvas.height / img.height;
-                var ratio = Math.min(hRatio, vRatio);
-                
-                contxt.strokeStyle = "#FFFFFF";
-                for (var id in featurePoints) {
-                    contxt.beginPath();
-                    contxt.arc(featurePoints[id].x,
-                    featurePoints[id].y, 2, 0, 2 * Math.PI);
-                    contxt.stroke();
-                }
-            }
-        }
-    </script>
+    <script type="text/javascript" src="{{url_for('static', filename='scripts/script_affdex.js')}}"></script>
     
     <!-- XLABS -->
-    <script type="text/javascript">
-        var xLabsVar = {
-            cameraStart : function() {
-                xLabs.setConfig( "frame.stream.enabled", "1" );
-                xLabs.setConfig( "system.mode", "learning" );
-            },
-            cameraStop : function() {
-                xLabs.setConfig( "frame.stream.enabled", "0" );
-                xLabs.setConfig( "system.mode", "off" );
-            },
-            ready : function() {
-                xLabs.setConfig( "gaze.temp.enabled", "1" );
-                xLabs.setConfig( "system.mode", "off" );
-                xLabs.setConfig( "browser.canvas.paintLearning", "0" );
-            },
-            idPath : function( id, path ) {
-              console.log( "id="+id+" path="+path );
-              if (id == "gazeLogs"){
-                alert( "DOM updated element "+id+" with xLabs CSV data from "+path );
-              }
-            },            
-            update : function() {
-              // Nothing.
-            },
-            refresh : function() {
-                xLabs.setConfig( "gaze.temp.id", "gazeLogs" );
-            }
-        };
-        
-        function xlabs_start() {
-            xLabsVar.cameraStart();
-            log('#logs', "xLabs: Start");
-        }
-        
-        function xlabs_stop() {
-            xLabsVar.cameraStop();
-            log('#logs', "xLabs: Stop");
-        }
-        
-        function xlabs_refresh() {
-            xLabsVar.refresh;
-            log('#logs', "xLabs: Refresh");
-        }
-
-        /*
-        function submit_handler() {
-            alert("Submission validation");
-            gaze_logs = document.getElementById("gazeLogs");
-            if (gaze_logs=="Here will come gaze logs...")
-                return false;
-            else{
-                alert("Submit the form");
-                return true;
-            }
-        }*/
-         
-        function onXlabsUpdate() {
-            /*
-            var xs = parseFloat( xLabs.getConfig( "state.gaze.estimate.x" ) );
-            var ys = parseFloat( xLabs.getConfig( "state.gaze.estimate.y" ) );        
-            if( !xLabs.documentOffsetReady() ) {
-                return;
-            }
-            
-            var trackingSuspended = parseInt( xLabs.getConfig( "state.trackingSuspended" ) );
-            var calibrationStatus = parseInt( xLabs.getConfig( "calibration.status" ) );
-            if( ( calibrationStatus == 0 ) || ( trackingSuspended == 1 ) ) {
-                return;
-            }            
-            var x = xLabs.scr2docX( xs );
-            var y = xLabs.scr2docY( ys );
-            var c = parseFloat( xLabs.getConfig( "state.calibration.confidence" ) );
-            */
-        }
-        
-        xLabs.setup(xLabsVar.ready, xLabsVar.update, xLabsVar.idPath, "a59f7e14-518a-4c2f-8ee9-3180cbcfb817");
-        
-        //document.getElementById("gaze_values").submit = submit_handler;
-    </script>
+    <script type="text/javascript" src="{{url_for('static', filename='scripts/script_xlabs.js')}}"></script>
     
     <!-- Surveys.js local library -->
-    <script type="text/javascript" src="{{url_for('static', filename='surveysjs/index.js')}}"></script>   
+    <script type="text/javascript" src="{{url_for('static', filename='scripts/script_surveysjs.js')}}"></script>   
 </body>
 </html>
