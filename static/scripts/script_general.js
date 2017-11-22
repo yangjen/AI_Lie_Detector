@@ -71,7 +71,6 @@ function btn_camera_reset() {
 };
 
 function btn_survey_start() {
-    log_events_write('survey_start');
     showSurvey();
     document.getElementById('divStartQuiz').style.display = 'none';
 }

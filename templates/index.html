@@ -31,6 +31,7 @@
     <script src="https://unpkg.com/jquery"></script>
     <script src="https://surveyjs.azureedge.net/0.96.0/survey.jquery.js"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='surveysjs/index.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='surveysjs/timer.css')}}">
     
     <!--
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -78,6 +79,7 @@
                     <div style="height:30px"></div>
                     <button id="btn-lg" type="button" class="btn btn-primary" style="min-width:200px;" onclick="btn_survey_start()">Give it a try !</button>
                 </div>
+                
                 <div id="surveyElement"></div>
                 <div id="surveyResult"></div>
             </div>
