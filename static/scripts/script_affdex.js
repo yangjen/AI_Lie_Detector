@@ -18,6 +18,7 @@ detector.detectAllAppearance();
 //Add a callback to notify when the detector is initialized and ready for running.
 detector.addEventListener("onInitializeSuccess", function() {
     log('#camera_log', "AFF: The detector reports initialized");
+    btn_survey_enable();
     
     //Display canvas instead of video feed because we want to draw the feature points on it
     if (showPoints) {

@@ -19,7 +19,6 @@
     <script type="text/javascript" src="{{url_for('static', filename='variables.js')}}"></script>
     <script>
         var myQuestions = {{ questions|tojson }};
-        var session_id = {{ session_id|tojson }};
     </script>
     
     <!-- AFFECTIVA -->
@@ -39,9 +38,9 @@
     -->
 </head>
 <body>
-    <div class="jumbotron text-center">
+    <div class="jumbotron text-center" style="background-color:#21618C;">
         <div class="container">
-            <h1>Try to fool a Neural Network!</h1>
+            <h1 style="color:#FFFFFF;">Try to fool a Neural Network!</h1>
         </div>
     </div>
     
@@ -54,12 +53,12 @@
                     <h5>CAMERA</h5>
                     <div id="affdex_elements" style="width:220px;height:170px;"></div>
                 </div>
-                <div class="btn-group btn-group">
-                    <button id="start" type="button" class="btn btn-success" style="min-width:100px;" onclick="btn_camera_start()">Start</button>
-                    <button id="stop"  type="button" class="btn btn-danger"  style="min-width:100px;" onclick="btn_camera_stop()">Stop</button>
-                    <!--<button id="reset" onclick="onReset()">Reset</button>-->
+                <div class="btn-group btn-group" style="display:none;">
+                    <button id="btn_camera_start" type="button" class="btn btn-success" style="min-width:100px;" onclick="camera_start()">Start</button>
+                    <button id="btn_camera_stop"  type="button" class="btn btn-danger"  style="min-width:100px;" onclick="camera_stop()">Stop</button>
+                    <!--<button id="btn_camera_reset" onclick="onReset()">Reset</button>-->
                 </div>
-                <div>
+                <div style="display:none;">
                     <div style="height:30px"></div>
                     <h5>CAMERA LOG</h5>
                     <div id="camera_log"></div>
@@ -67,8 +66,8 @@
             </div>
             
             <!-- Content -->
-            <div class="col-md-9">
-                <div id="divStartQuiz" style="padding:0px 50px;">
+            <div class="col-md-6">
+                <div id="surveyIni" style="padding:0px 50px;">
                     <p>
                         - You will be presented with 3 simple questions.<br />
                         - You have to answer 2 of them with the truth and 1 with a lie.<br />
@@ -78,16 +77,19 @@
                         Do you really think that you can fool a neural network? <br />
                     </p>
                     <div style="height:30px"></div>
-                    <button id="btn-lg" type="button" class="btn btn-primary" style="min-width:200px;" onclick="btn_survey_start()">Give it a try !</button>
+                    <button id="btn_camera_initialize" type="button" class="btn btn-success" style="min-width:200px;" onclick="camera_initialize()">Initialize camera</button>
+                    </p>
+                    <button id="btn_survey_start" type="button" class="btn btn-primary" style="min-width:200px;" onclick="survey_start()" disabled>Give it a try !</button>
                 </div>
-                
                 <div id="surveyElement"></div>
                 <div id="surveyResult"></div>
             </div>
-            
+        </div>
+        
+        <div class="row">
             <!-- Affdex Results -->
-            <div class="col-md-9" style="min-height:100px;background-color:#00FF00;display:none;">
-                <div class="col-md-9">
+            <div class="col-md-6" style="min-height:100px;background-color:#00FF00;display:none;">
+                <div class="col-md-6">
                     <div class="row">
                         <h5>EMOTION TRACKING RESULTS</h5>
                     </div>
@@ -99,8 +101,8 @@
             </div>
             
             <!-- Logs -->
-            <div class="col-md-9" style="min-height:100px;background-color:#FFFF00;display:none;">
-                <div class="col-md-9">
+            <div class="col-md-6" style="min-height:100px;background-color:#FFFF00;display:none;">
+                <div class="col-md-6">
                     <div class="row">
                         <h5>TRACKING LOG</h5>
                     </div>

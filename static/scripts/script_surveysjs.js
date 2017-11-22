@@ -4,7 +4,7 @@ Survey.defaultBootstrapCss.navigationButton = "btn btn-primary";
 var html_quest_pre = "<div style='min-height:150px'><h2>"
 var html_quest_post = "</h2></div>"
 var html_timer_pre = "<div id='countdown'><div id='countdown-number_"
-var html_timer_post = "' class='countdown-number'></div><svg><circle r='18' cx='20' cy='20'></circle></svg></div>"
+var html_timer_post = "' class='countdown-number'></div><svg><circle r='27' cx='30' cy='30'></circle></svg></div>"
 
 var json = {
     //showProgressBar: "bottom",
@@ -50,7 +50,7 @@ survey.onAfterRenderQuestion.add(function(surveymodel,htmlElement) {
 survey.onComplete.add(function(survey, options){
     log_events_write('survey_end');
     
-    btn_camera_stop();
+    camera_stop();
     
     setTimeout(
     function() {

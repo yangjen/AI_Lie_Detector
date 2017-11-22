@@ -11,7 +11,7 @@ app.config['SECRET_KEY'] = 'WeXiLeDiJo'
 @app.route("/", methods=["GET"])
 def html_index():
     session['session_id'],questions = db_func.get_input()
-    return render_template('index.html', session_id=session['session_id'], questions=questions)
+    return render_template('index.html', questions=questions)
 
 
 @app.route("/index_post", methods = ["POST"])
@@ -23,8 +23,6 @@ def get_logs():
     if "log_affdex" in request.form: log_affdex = request.form.get("log_affdex", None)
     if "log_xlabs" in request.form: log_xlabs = request.form.get("log_xlabs", None)
     if "log_events" in request.form: log_events = request.form.get("log_events", None)
-
-    print(session['session_id'])
 
     db_func.process_logs(session['session_id'],log_affdex,log_xlabs,log_events)
 

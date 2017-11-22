@@ -13,7 +13,7 @@ var xLabsVar = {
         xLabs.setConfig( "browser.canvas.paintLearning", "0" );
     },
     idPath : function( id, path ) {
-        console.log( "id="+id+" path="+path );
+        //console.log( "id="+id+" path="+path );
     },            
     update : function() {
         //onXlabsUpdate();

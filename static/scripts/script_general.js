@@ -35,8 +35,22 @@ function log_events_write(event) {
 
 
 
+function btn_initialize_disable() {
+    document.getElementById("btn_camera_initialize").disabled = true;
+}
 
-function btn_camera_start() {
+function btn_survey_enable() {
+    document.getElementById("btn_survey_start").disabled = false;
+}
+
+
+
+function camera_initialize() {
+    btn_initialize_disable();
+    camera_start();
+}
+
+function camera_start() {
     if (detector && !detector.isRunning) {
         log_reset();
         log_affdex_reset();
@@ -49,7 +63,7 @@ function btn_camera_start() {
     }
 }
 
-function btn_camera_stop() {
+function camera_stop() {
     log('#camera_log', "Clicked the stop button");
     if (detector && detector.isRunning) {
         detector.removeEventListener();
@@ -61,7 +75,7 @@ function btn_camera_stop() {
     }
 }
 
-function btn_camera_reset() {
+function camera_reset() {
     log('#camera_log', "Clicked the reset button");
     if (detector && detector.isRunning) {
         detector.reset();
@@ -70,7 +84,7 @@ function btn_camera_reset() {
     }
 };
 
-function btn_survey_start() {
+function survey_start() {
     showSurvey();
-    document.getElementById('divStartQuiz').style.display = 'none';
+    document.getElementById('surveyIni').style.display = 'none';
 }
