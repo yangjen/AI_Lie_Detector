@@ -19,6 +19,7 @@
     <script type="text/javascript" src="{{url_for('static', filename='variables.js')}}"></script>
     <script>
         var myQuestions = {{ questions|tojson }};
+        var session_id = {{ session_id|tojson }};
     </script>
     
     <!-- AFFECTIVA -->
@@ -98,7 +99,7 @@
             </div>
             
             <!-- Logs -->
-            <div class="col-md-9" style="min-height:100px;background-color:#FFFF00;display:visible;">
+            <div class="col-md-9" style="min-height:100px;background-color:#FFFF00;display:none;">
                 <div class="col-md-9">
                     <div class="row">
                         <h5>TRACKING LOG</h5>
