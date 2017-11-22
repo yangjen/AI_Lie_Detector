@@ -28,7 +28,7 @@ function log_events_reset() {
 function log_events_write(event) {
     if (gTrackButtons) {
         var timeStamp = (new Date()).getTime();
-        document.getElementById("log_events").value += '{"timestamp":' + timeStamp + ',"event":"' + event + '"}';
+        document.getElementById("log_events").value += '{"timestamp":' + timeStamp + ',"event":"' + event + '"}' + "\n";
     }
 }
 

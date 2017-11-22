@@ -15,20 +15,22 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
     integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     
+    <!-- VARIABLES -->
+    <script type="text/javascript" src="{{url_for('static', filename='variables.js')}}"></script>
+    <script>
+        var myQuestions = {{ questions|tojson }};
+    </script>
+    
     <!-- AFFECTIVA -->
     <script type="text/javascript" src="{{url_for('static', filename='affdex/affdex.js')}}"></script>
     
     <!-- XLABS -->
     <script type="text/javascript" src="{{url_for('static', filename='xlabs/xlabs.js')}}"></script>
     
-    <!-- Survey JS -->
-    <script>
-        var myQuestions = {{ questions|tojson }};
-    </script>
+    <!-- SURVEYJS -->
     <script src="https://unpkg.com/jquery"></script>
     <script src="https://surveyjs.azureedge.net/0.96.0/survey.jquery.js"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='surveysjs/index.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='surveysjs/timer.css')}}">
     
     <!--
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -41,6 +43,7 @@
         </div>
     </div>
     
+    <form id="app_form" method="post" action="/index_post">
     <div class="container-fluid">
         <div class="row">
             <!-- Camera -->
@@ -63,7 +66,7 @@
             
             <!-- Content -->
             <div class="col-md-9">
-                <div id="divStartQuiz" style="padding:0px 50px">
+                <div id="divStartQuiz" style="padding:0px 50px;">
                     <p>
                         - You will be presented with 3 simple questions.<br />
                         - You have to answer 2 of them with the truth and 1 with a lie.<br />
@@ -93,39 +96,31 @@
             </div>
             
             <!-- Logs -->
-            <div class="col-md-9" style="min-height:100px;background-color:#FFFF00;display:visible;">
+            <div class="col-md-9" style="min-height:100px;background-color:#FFFF00;display:none;">
                 <div class="col-md-9">
                     <div class="row">
                         <h5>TRACKING LOG</h5>
                     </div>
                     <div class="row">
-                        <textarea id="log_affdex" rows="3" cols="100"></textarea>
+                        <textarea id="log_affdex" name="log_affdex" rows="3" cols="100"></textarea>
                     </div>
                     <div class="row">
-                        <textarea id="log_xlabs" rows="3" cols="100"></textarea>
+                        <textarea id="log_xlabs" name="log_xlabs" rows="3" cols="100"></textarea>
                     </div>
                     <div class="row">
-                        <textarea id="log_events" rows="3" cols="100"></textarea>
+                        <textarea id="log_events" name="log_events" rows="3" cols="100"></textarea>
                     </div>
                 </div>
             </div>
         </div>  
     </div>
+    </form>
     
     <!--
     <footer class="container-fluid">
         <p>Footer Text</p>
     </footer>
     -->
-    
-    <!-- VARIABLES -->
-    <script type="text/javascript">
-        var gTrackCamera = true;
-        var gShowAffRes = false;
-        var gTrackAff = true;
-        var gTrackXlabs = true;
-        var gTrackButtons = true;
-    </script>
     
     <!-- GENERAL -->
     <script type="text/javascript" src="{{url_for('static', filename='scripts/script_general.js')}}"></script>
@@ -136,7 +131,7 @@
     <!-- XLABS -->
     <script type="text/javascript" src="{{url_for('static', filename='scripts/script_xlabs.js')}}"></script>
     
-    <!-- Surveys.js local library -->
+    <!-- SURVEYJS -->
     <script type="text/javascript" src="{{url_for('static', filename='scripts/script_surveysjs.js')}}"></script>   
 </body>
 </html>

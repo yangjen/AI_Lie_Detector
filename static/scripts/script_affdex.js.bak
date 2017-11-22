@@ -50,7 +50,8 @@ detector.addEventListener("onImageResultsSuccess", function(faces, image, timest
     if (gTrackAff) {
         if (faces.length > 0) {
             jnom = '{"app":"affdex"}';
-            jtim = '{"timestamp":'+timestamp+'}';
+            //jtim = '{"timestamp":'+timestamp+'}';
+            jtim = '{"timestamp":'+detector.getCurrentTimeStamp()+'}';
             japp = JSON.stringify(faces[0].appearance);
             jemo = JSON.stringify(faces[0].emotions, function(key, val) {
                     return val.toFixed ? Number(val.toFixed(0)) : val;
@@ -60,8 +61,6 @@ detector.addEventListener("onImageResultsSuccess", function(faces, image, timest
                    });
             
             jres = '{'+jnom+','+jtim+','+japp+','+jemo+','+jexp+'}';
-            
-            jres = detector.getCurrentTimeStamp();
             
             document.getElementById("log_affdex").value += jres+"\n";
         }

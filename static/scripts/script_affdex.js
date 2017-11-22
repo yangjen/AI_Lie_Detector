@@ -62,7 +62,7 @@ detector.addEventListener("onImageResultsSuccess", function(faces, image, timest
             
             jres = '{'+jnom+','+jtim+','+japp+','+jemo+','+jexp+'}';
             
-            document.getElementById("log_affdex").value += jres+"\n";
+            document.getElementById("log_affdex").value += jres + "\n";
         }
     };
     
