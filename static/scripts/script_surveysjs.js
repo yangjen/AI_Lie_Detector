@@ -36,6 +36,9 @@ var json = {
 window.survey = new Survey.Model(json);
 
 survey.onCurrentPageChanged.add(function(result, options) {
+    if (options.newCurrentPage.name != "question_1") {
+        log_events_write(options.oldCurrentPage.name + '_ends');
+    };
     log_events_write(options.newCurrentPage.name + '_start');
 });
 
@@ -48,6 +51,7 @@ survey.onAfterRenderQuestion.add(function(surveymodel,htmlElement) {
 //});
 
 survey.onComplete.add(function(survey, options){
+    log_events_write('question_3_ends');
     log_events_write('survey_end');
     
     camera_stop();
