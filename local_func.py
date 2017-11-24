@@ -9,6 +9,8 @@ def write_file(filename,array):
 
 def local_save(questions,log_affdex,log_xlabs,log_events):
     path = "local_results"
+    if not os.path.exists(os.path.join(os.getcwd(),path)):
+        os.makedirs(os.path.join(os.getcwd(),path))
     idd = math.floor(time.time())
 
     write_file(os.path.join(os.getcwd(),path,str(idd)+"_"+"log_questions.txt"),questions)
