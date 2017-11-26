@@ -8,8 +8,6 @@ def get_input():
         data=myfile.read().splitlines()
         sample_questions = random.sample(data, 3)
 
-    print(sample_questions)
-
     return session_id,sample_questions
 
 # Process the results from index.html
