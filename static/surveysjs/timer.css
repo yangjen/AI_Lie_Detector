@@ -29,6 +29,13 @@ svg circle {
   stroke-width: 4px;
   stroke: #21618C;
   fill: none;
+}
+
+.svg-circle-3 {
+  animation: countdown 3s linear /*infinite*/ forwards;
+}
+
+.svg-circle-10 {
   animation: countdown 10s linear /*infinite*/ forwards;
 }
 
