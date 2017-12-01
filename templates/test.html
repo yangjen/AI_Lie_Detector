@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>P4BA Testing Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+    integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+
+    <style>
+        #countdown {
+          position: relative;
+          margin: auto;
+          /*margin-top: 100px;*/
+          height: 100px;
+          width: 100px;
+          text-align: center;
+        }
+
+        .countdown-number {
+          display: inline-block;
+          line-height: 100px;
+          font-size: 20px;
+        }
+
+        svg {
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 100px;
+          height: 100px;
+          transform: rotateY(-180deg) rotateZ(-90deg);
+        }
+
+        svg circle {
+          stroke-dashoffset: 0px;
+          stroke-linecap: round;
+          fill: none;
+        }
+
+        .svg-circle-3 {
+          stroke-width: 4px;
+          stroke: #21618C;
+          stroke-dasharray: 283px;
+          animation: countdown-3 3s linear /*infinite*/ forwards;
+        }
+
+        .svg-circle-10 {
+          stroke-width: 4px;
+          stroke: #51aa51;
+          stroke-dasharray: 189px;
+          animation: countdown-10 10s 3s linear /*infinite*/ forwards;
+        }
+
+        @keyframes countdown-10 {
+          from {
+            stroke-dashoffset: 0px;
+          }
+          to {
+            stroke-dashoffset: 100px;
+          }
+        }
+
+        @keyframes countdown-3 {
+          from {
+            stroke-dashoffset: 0px;
+          }
+          to {
+            stroke-dashoffset: 100%;
+          }
+        }
+    </style>
+</head>
+<body>
+    <div class="jumbotron text-center" style="background-color:#21618C;">
+        <div class="container">
+            <h1 style="color:#FFFFFF;">Testing page!</h1>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md">
+                <div>
+                    <h5>Testing timer...</h5>
+                    <div id='countdown'>
+                        <div id='countdown-number' class='countdown-number'></div>
+                        <svg>
+                            <circle id='circle-3' class='svg-circle-3' r='45' cx='50' cy='50'></circle>
+                            <circle id='circle-10' class='svg-circle-10' r='30' cx='50' cy='50'></circle>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" >
+        var eleid = 'countdown-number';
+        var countdownNumberEl = document.getElementById(eleid);
+
+        var first = true;
+        var countdown = 3;
+        countdownNumberEl.textContent = countdown;
+        var interval = setInterval(function() {
+            countdown = --countdown;// <= 0 ? 10 : countdown;
+            if (countdown == 0) {
+                if (first) {
+                    first = false;
+                    countdown = 10;
+                }
+                else {
+                    clearInterval(interval);
+                }
+            }
+            countdownNumberEl.textContent = countdown;
+        }, 1000);
+    </script>
+</body>
+</html>

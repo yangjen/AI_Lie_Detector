@@ -1,7 +1,7 @@
 import random
 
 # Prepare the questions to send to index.html
-def get_input():
+def db_get_input():
     session_id = 22
 
     with open("static/questions.txt", "r") as myfile:
@@ -11,6 +11,16 @@ def get_input():
     return session_id,sample_questions
 
 # Process the results from index.html
-def process_logs(session_id,log_affdex,log_xlabs,log_events):
-    print("I received data from the session_id=",session_id)
+def db_store_results(session_id,log_affdex,log_xlabs,log_events):
+    #print("I received data from the session_id=",session_id)
+    return
+
+# Store the prediction
+def db_store_prediction(session_id,prediction):
+    print("The prediction for session_id " + session_id + " is: " + prediction)
+    return
+
+# Store the truth
+def db_store_truth(session_id,correct_res):
+    print("The correct answer for session_id " + session_id + " was: " + correct_res)
     return

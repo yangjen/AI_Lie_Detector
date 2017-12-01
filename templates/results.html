@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>P4BA App</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+    integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- VARIABLES -->
+    <script type="text/javascript" src="{{url_for('static', filename='variables.js')}}"></script>
+    <script>
+        var myQuestions = {{ questions|tojson }};
+        var myEstimate = {{ estimate|tojson }};
+    </script>
+</head>
+<body>
+    <div class="jumbotron text-center" style="background-color:#21618C;">
+        <div class="container">
+            <h1 style="color:#FFFFFF;">Try to fool a Neural Network!</h1>
+        </div>
+    </div>
+
+    <form id="res_form" method="post" action="/results_post">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-6">
+                <h2>Gotcha! You lied on:</h2>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+        <div class="row" style="height:30px"></div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-2">
+                <button id="btn_res_1" type="button" class="btn btn-secondary" onclick="btn_result_click(this.id)"></button>
+            </div>
+            <div class="col-md-2">
+                <button id="btn_res_2" type="button" class="btn btn-secondary" onclick="btn_result_click(this.id)"></button>
+            </div>
+            <div class="col-md-2">
+                <button id="btn_res_3" type="button" class="btn btn-secondary" onclick="btn_result_click(this.id)"></button>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+        <div class="row" style="height:30px"></div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <center><h4 id="res_ask">Click the question you lied on...</h4><h1 id="res_comment"></h1></center>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+    <div class="container-fluid" style="display:none;">
+        <center><textarea id="log_res" name="log_res" rows="1" cols="10"></textarea></center>
+    </div>
+    </form>
+
+    <!-- RESULTS -->
+    <script type="text/javascript" src="{{url_for('static', filename='scripts/script_results.js')}}"></script>
+</body>
+</html>

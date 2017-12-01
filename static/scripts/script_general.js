@@ -1,3 +1,11 @@
+//----------------------------------------------------------------------------------------------------------------------
+// Debug code
+//document.getElementById("btn_survey_start").disabled = false;
+//document.getElementById("div_log").style.display = "inline";
+//document.getElementById("div_aff").style.display = "inline";
+
+//----------------------------------------------------------------------------------------------------------------------
+
 function log(node_name, msg) {
     //if ((node_name!='#camera_log') || (node_name='#camera_log' && gTrackCamera)) {
         $(node_name).append("<span>" + msg + "</span><br />")
@@ -26,7 +34,7 @@ function log_events_reset() {
 }
 
 function log_events_write(event) {
-    if (gTrackButtons) {
+    if (gTrackEvents) {
         var timeStamp = (new Date()).getTime();
         document.getElementById("log_events").value += '{"timestamp":' + timeStamp + ',"event":"' + event + '"}' + "\n";
     }

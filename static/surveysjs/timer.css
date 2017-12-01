@@ -1,15 +1,14 @@
 #countdown {
   position: relative;
   margin: auto;
-  /*margin-top: 100px;*/
-  height: 60px;
-  width: 60px;
+  height: 100px;
+  width: 100px;
   text-align: center;
 }
 
 .countdown-number {
   display: inline-block;
-  line-height: 60px;
+  line-height: 100px;
   font-size: 20px;
 }
 
@@ -17,33 +16,43 @@ svg {
   position: absolute;
   top: 0;
   right: 0;
-  width: 60px;
-  height: 60px;
+  width: 100px;
+  height: 100px;
   transform: rotateY(-180deg) rotateZ(-90deg);
 }
 
 svg circle {
-  stroke-dasharray: 169px;
   stroke-dashoffset: 0px;
   stroke-linecap: round;
   stroke-width: 4px;
-  stroke: #21618C;
   fill: none;
 }
 
-.svg-circle-3 {
-  animation: countdown 3s linear /*infinite*/ forwards;
+.svg-circle-w {
+  stroke: #21618C;
+  stroke-dasharray: 283px;
+  animation: countdown-w 3s linear /*infinite*/ forwards;
+}
+.svg-circle-a {
+  stroke: #51aa51;
+  stroke-dasharray: 189px;
+  animation: countdown-a 10s 3s linear /*infinite*/ forwards;
 }
 
-.svg-circle-10 {
-  animation: countdown 10s linear /*infinite*/ forwards;
-}
-
-@keyframes countdown {
+@keyframes countdown-w {
   from {
     stroke-dashoffset: 0px;
   }
   to {
-    stroke-dashoffset: 169px;
+    stroke-dashoffset: 283px;
   }
 }
+@keyframes countdown-a {
+  from {
+    stroke-dashoffset: 0px;
+  }
+  to {
+    stroke-dashoffset: 189px;
+  }
+}
+

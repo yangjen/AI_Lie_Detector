@@ -2,73 +2,66 @@ Survey.Survey.cssType = "bootstrap";
 Survey.defaultBootstrapCss.navigationButton = "btn btn-primary";
 
 // Questions' config
-var quest_wait = "Next question in...";
-
 var quest_div1 = "<div style='min-height:150px'><h2>";
 var quest_div2 = "</h2></div>";
 
 var timer_div11 = "<div id='countdown'>";
 var timer_div21 = "<div id='countdown-number_";
 var timer_div22 = "' class='countdown-number'></div>";
-var timer_svg11 = "<svg><circle class='svg-circle-";
-var timer_svg12 = "' r='27' cx='30' cy='30'></circle></svg>";
+var timer_svg11 = "<svg>";
+var timer_svg20 = "<circle class='svg-circle-w' r='45' cx='50' cy='50'></circle>";
+var timer_svg30 = "<circle class='svg-circle-a' r='30' cx='50' cy='50'></circle>";
+var timer_svg12 = "</svg>";
 var timer_div12 = "</div>";
+
+var comment_wait = "Get ready....";
+var comment_answ = "Go!";
+var comment_div = "<div><center><h3 id='comment'>" + comment_wait + "</h3></center></div>";
 
 // Survey
 var json = {
     //showNavigationButtons: false,
     //showProgressBar: "bottom",
     //showTimerPanel: "bottom",
-    //maxTimeToFinishPage: 10,
-    //maxTimeToFinish: 3*(3+10)+1,
+    //maxTimeToFinishPage: 3+10,
+    maxTimeToFinish: 3*(3+10)+1,
     title: "",
     pages: [
-        {   name: "question_1_pre",
-            questions: [{
-                type: "html", name: "q1_pre",
-                html: quest_div1 + quest_wait + quest_div2
-                    + timer_div11 + timer_div21 + "q1_pre" + timer_div22 + timer_svg11 + "3" + timer_svg12 + timer_div12
-            }]
-        },
         {   name: "question_1",
             questions: [{
                 type: "html", name: "q1",
                 html: quest_div1 + myQuestions[0] + quest_div2
-                    + timer_div11 + timer_div21 + "q1" + timer_div22 + timer_svg11 + "10" + timer_svg12 + timer_div12
-            }]
-        },
-        {   name: "question_2_pre",
-            maxTimeToFinish: 3,
-            questions: [{
-                type: "html", name: "q2_pre",
-                html: quest_div1 + quest_wait + quest_div2
-                    + timer_div11 + timer_div21 + "q2_pre" + timer_div22 + timer_svg11 + "3" + timer_svg12 + timer_div12
+                    + timer_div11
+                    + timer_div21 + "q1" + timer_div22
+                    + timer_svg11 + timer_svg20 + timer_svg30 + timer_svg12
+                    + timer_div12
+                    + comment_div
             }]
         },
         {   name: "question_2",
             questions: [{
                 type: "html", name: "q2",
                 html: quest_div1 + myQuestions[1] + quest_div2
-                    + timer_div11 + timer_div21 + "q2" + timer_div22 + timer_svg11 + "10" + timer_svg12 + timer_div12
-            }]
-        },
-        {   name: "question_3_pre",
-            maxTimeToFinish: 3,
-            questions: [{
-                type: "html", name: "q3_pre",
-                html: quest_div1 + quest_wait + quest_div2
-                    + timer_div11 + timer_div21 + "q3_pre" + timer_div22 + timer_svg11 + "3" + timer_svg12 + timer_div12
+                    + timer_div11
+                    + timer_div21 + "q2" + timer_div22
+                    + timer_svg11 + timer_svg20 + timer_svg30 + timer_svg12
+                    + timer_div12
+                    + comment_div
             }]
         },
         {   name: "question_3",
             questions: [{
                 type: "html", name: "q3",
                 html: quest_div1 + myQuestions[2] + quest_div2
-                    + timer_div11 + timer_div21 + "q3" + timer_div22 + timer_svg11 + "10" + timer_svg12 + timer_div12
+                    + timer_div11
+                    + timer_div21 + "q3" + timer_div22
+                    + timer_svg11 + timer_svg20 + timer_svg30 + timer_svg12
+                    + timer_div12
+                    + comment_div
             }]
         }
     ],
-    completedHtml: "<h4>Loading...</h4>"
+    completedHtml: "<h4>Analyzing your responses...</h4>"
 };
 
 window.survey = new Survey.Model(json);
@@ -80,17 +73,11 @@ survey.onCurrentPageChanged.add(function(result, options) {
         if (oldname.substring(oldname.length-4,oldname.length) != "_pre"){
             log_events_write(oldname + '_ends');
         }
-
-        // If new page is question, write start
-        var newname = options.newCurrentPage.name;
-        if (newname.substring(newname.length-4,newname.length) != "_pre"){
-            log_events_write(newname + '_start');
-        }
     }
 });
 
 survey.onAfterRenderQuestion.add(function(surveymodel,htmlElement) {
-    start_timer(surveymodel.currentPage.questions[0].name, surveymodel.currentPage.maxTimeToFinish);
+    start_timer(surveymodel.currentPage.questions[0].name);
 })
 
 //survey.onComplete.add(function(result) {
@@ -126,17 +113,6 @@ survey.onComplete.add(function(survey, options){
 });
 
 function showSurvey() {
-    // Set maxTimeToFinish for each page
-    for (i = 0; i < survey.pages.length; i++) {
-        pagname = survey.pages[i].name;
-        if (pagname.substring(pagname.length-4,pagname.length) == "_pre"){
-            survey.pages[i].maxTimeToFinish = 3;
-        }
-        else {
-            survey.pages[i].maxTimeToFinish = 10;
-        }
-    }
-
     // Start survey
     log_events_write('survey_start');
 
@@ -145,18 +121,40 @@ function showSurvey() {
     });
 }
 
-function start_timer(question_name,question_time) {
+function start_timer(question_name) {
+    var eleid = 'comment';
+    var commentEl = document.getElementById(eleid);
     var eleid = 'countdown-number_' + question_name;
     var countdownNumberEl = document.getElementById(eleid);
-    var countdown = question_time;
-    
+
+    var this_waiting = true;
+    var this_isLastPage = survey.isLastPage;
+    var this_currentPageNo = survey.currentPageNo;
+
+    var countdown = 3;
     countdownNumberEl.textContent = countdown;
-    
     var interval = setInterval(function() {
-        countdown = --countdown;// <= 0 ? 10 : countdown;
-        countdownNumberEl.textContent = countdown;
-        if (countdown == 0){
+        if (this_currentPageNo != survey.currentPageNo) {
             clearInterval(interval);
+        };
+        countdown = --countdown;
+        if (countdown == 0){
+            if (this_waiting) {
+                this_waiting = false;
+                countdown = 10;
+                log_events_write(survey.currentPage.name + '_start');
+                commentEl.textContent = comment_answ;
+            }
+            else {
+                if (this_isLastPage) {
+                    survey.doComplete();
+                }
+                else {
+                    survey.nextPage()
+                };
+                clearInterval(interval);
+            }
         }
+        countdownNumberEl.textContent = countdown;
     }, 1000);
 }

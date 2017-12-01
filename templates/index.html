@@ -44,7 +44,7 @@
         </div>
     </div>
     
-    <form id="app_form" method="post" action="/index_post">
+    <form id="app_form" method="post" action="/results">
     <div class="container-fluid">
         <div class="row">
             <!-- Camera -->
@@ -69,10 +69,13 @@
             <div class="col-md-6">
                 <div id="surveyIni" style="padding:0px 50px;">
                     <p>
-                        - You will be presented with 3 simple questions.<br />
-                        - You have to answer 2 of them with the truth and 1 with a lie.<br />
-                        - You will have only 10 seconds to answer. <br />
-                        - After you finish, the algorithm will try to guess in which question you lied. <br />
+                        You will be presented with 3 simple questions.<br />
+                        Answer 2 of them with the truth and 1 with a lie.<br />
+                        <br />
+                        You will have 3 seconds to read the question.<br />
+                        And only 10 seconds to answer. <br />
+                        <br />
+                        After you finish, the algorithm will try to guess in which question you lied. <br />
                         <br />
                     <h4>Do you really think that you can fool a neural network? </h4>
                     </p>
@@ -88,7 +91,7 @@
         
         <div class="row">
             <!-- Affdex Results -->
-            <div class="col-md-6" style="min-height:100px;background-color:#00FF00;display:none;">
+            <div id="div_aff" class="col-md-6" style="min-height:100px;background-color:#00FF00;display:none;">
                 <div class="col-md-6">
                     <div class="row">
                         <h5>EMOTION TRACKING RESULTS</h5>
@@ -101,7 +104,7 @@
             </div>
             
             <!-- Logs -->
-            <div class="col-md-6" style="min-height:100px;background-color:#FFFF00;display:none;">
+            <div id="div_log" class="col-md-6" style="min-height:100px;background-color:#FFFF00;display:none;">
                 <div class="col-md-6">
                     <div class="row">
                         <h5>TRACKING LOG</h5>
