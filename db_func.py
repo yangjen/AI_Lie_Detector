@@ -16,11 +16,13 @@ def db_get_input_csv():
 db = pymysql.connect("localhost", "root", "weisi9527sj", "P5BA")
 cursor = db.cursor()
 
+questions_id=[]
+sessionQues=[]
 
 def db_get_input():
     sample_questions=[]
     session_id="0"
-    
+
     try:
         sql = "select * from Session order by sessionID desc limit 1"
         cursor.execute(sql)
@@ -35,19 +37,24 @@ def db_get_input():
         print(sql_sess)
         cursor.execute(sql_sess)
 
-        
+        global questions_id
         sql_question = "select * from Question"
         cursor.execute(sql_question)
         questions_table = cursor.fetchall()
         questions_no = len(questions_table)
         questions_id = random.sample(range(questions_no),3)
-        print(questions_id)
+        
         
         for q_id in questions_id:
             question = questions_table[q_id][1]
             sample_questions = sample_questions + [question]
-            q_id_real =str(q_id+1)
-            db.commit()
+        
+        for i in range(3):
+            questions_id[i]=str(questions_id[i]+1)
+        print(questions_id)
+        
+        
+        db.commit()
 
     except:
         # if fail, roll back
@@ -61,14 +68,13 @@ def db_store_results(session_id,log_affdex,log_xlabs,log_events):
     try:
         sessionid = str(session_id)
 
-        sessionQues_id = "0"
         # get sessionQues_id
         sql_getSessionQuesID = "select * from Session_question order by sessionQuesID desc limit 1"
         cursor.execute(sql_getSessionQuesID)
         results = cursor.fetchall()[0]
         sessionQues_id = results[0]
 
-
+        global sessionQues
         sessionQues = [str(int(sessionQues_id)+1),str(int(sessionQues_id)+2),str(int(sessionQues_id)+3)]
         print("<<<<<<<<<<<<<<<<")
         print(sessionQues)
@@ -192,21 +198,51 @@ def db_store_results(session_id,log_affdex,log_xlabs,log_events):
         db.rollback()
         print("So sad..................")
         #print("I received data from the session_id=",session_id)
-    db.close()
+
 
     return
 
 # Store the prediction
 def db_store_prediction(session_id,prediction):
-
+    # =========== Write Table Session_question ===========
+    for seq in range(3):
+        if prediction == seq + 1:
+            prediction_bin = "1"
+        else:
+            prediction_bin = "0"
+        try:
+            question=str(questions_id[seq])
+            sequen=str(seq+1)
+            
+            sql_prediction = "insert into Session_question(sessionQuesID,sessionID,questionID,sequence,pLabel) values("+sessionQues[seq]+","+session_id+","+question+","+sequen+","+prediction_bin+")"
+            
+            print(sql_prediction)
+            cursor.execute(sql_prediction)
+            db.commit()
+        except:
+            db.rollback()
+            print("session_predict.........")
     
     #print("The prediction for session_id " + session_id + " is: " + prediction)
     return
 
-# Store the truth
 def db_store_truth(session_id,correct_res):
-    #------------session_question------
-    #----------------------------------
+    # =========== Update Table Session_question ===========
+    for seq in range(3):
+        if correct_res == str(seq + 1):
+            correct_res_bin = "1"
+        else:
+            correct_res_bin = "0"
+        try:
+            
+            sql_correct_res = "update Session_question set tLabel="+correct_res_bin+" where sessionQuesID="+sessionQues[seq]
+            print(correct_res)
+            print(sql_correct_res)
+            cursor.execute(sql_correct_res)
+            db.commit()
+        except:
+            db.rollback()
+            print("session_label.........")
     
-    #print("The correct answer for session_id " + session_id + " was: " + correct_res)
+    #print("The prediction for session_id " + session_id + " is: " + prediction)
     return
