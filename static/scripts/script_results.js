@@ -4,7 +4,7 @@ document.getElementById("btn_res_2").textContent = myQuestions[1];
 document.getElementById("btn_res_3").textContent = myQuestions[2];
 
 // Change the class of the button with the lying question
-document.getElementById("btn_res_" + myEstimate).className = "btn btn-warning";
+document.getElementById("btn_res_" + myPrediction).className = "btn btn-warning";
 
 // Variable que revisa si ya se entrego resultado
 var user_clicked = false;
@@ -23,7 +23,7 @@ function btn_result_click(clicked_id) {
         // Wrong prediction
         else {
             btnEl.className = "btn btn-success";
-            document.getElementById("btn_res_" + myEstimate).className = "btn btn-danger";
+            document.getElementById("btn_res_" + myPrediction).className = "btn btn-danger";
             document.getElementById("res_comment").textContent = ":(";
         };
 

@@ -15,8 +15,8 @@ app.config['SECRET_KEY'] = 'WeXiLeDiJo'
 def html_test():
     #return render_template('test.html')
     session['session_id'], session['questions'] = db_func.db_get_input()
-    estimate = randint(1, 3)
-    return render_template('results.html', questions=session['questions'], estimate=estimate)
+    prediction = randint(1, 3)
+    return render_template('results.html', questions=session['questions'], prediction=prediction)
 
 
 @app.route("/", methods=["GET"])
@@ -46,13 +46,13 @@ def html_index_post():
     # Wait for results
     time.sleep(3)
 
-    # Get the estimated value from the model
-    estimate = randint(1,3)
-    db_func.db_store_prediction(session['session_id'],estimate)
+    # Get the predicted value from the model
+    prediction = randint(1,3)
+    db_func.db_store_prediction(session['session_id'],prediction)
 
     # Show the results page
     #return make_response(jsonify("do nothing for now")), 204
-    return render_template('results.html', questions=session['questions'], estimate=estimate)
+    return render_template('results.html', questions=session['questions'], prediction=prediction)
 
 
 @app.route("/results_post", methods = ["POST"])

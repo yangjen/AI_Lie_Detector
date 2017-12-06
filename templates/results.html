@@ -21,7 +21,7 @@
     <script type="text/javascript" src="{{url_for('static', filename='variables.js')}}"></script>
     <script>
         var myQuestions = {{ questions|tojson }};
-        var myEstimate = {{ estimate|tojson }};
+        var myPrediction = {{ prediction|tojson }};
     </script>
 </head>
 <body>
