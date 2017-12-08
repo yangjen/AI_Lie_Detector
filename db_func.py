@@ -5,7 +5,6 @@ import time
 
 print_stuff = True
 
-
 # Prepare the questions to send to index.html
 def db_get_input_csv():
     session_id = 22
@@ -35,6 +34,20 @@ def db_get_input():
     sample_questions=[]
     session_id="0"
 
+    # get last sessionQues_id
+    if use_database:
+        sql_getSessionQuesID = "select * from Session_question order by sessionQuesID desc limit 1"
+        cursor.execute(sql_getSessionQuesID)
+        results = cursor.fetchall()[0]
+        sessionQues_id = results[0]
+    else:
+        sessionQues_id = 0
+
+    global sessionQues
+    sessionQues = [str(int(sessionQues_id) + 1), str(int(sessionQues_id) + 2), str(int(sessionQues_id) + 3)]
+    if print_stuff: print("<<<<<<<<<<<<<<<<")
+    if print_stuff: print(sessionQues)
+
     if use_database:
         try:
             # Ask for Session ID
@@ -53,26 +66,11 @@ def db_get_input():
             cursor.execute(sql_sess)
 
             # Select 3 questions
-            global questions_id
             sql_question = "select * from Question"
             cursor.execute(sql_question)
             questions_table = cursor.fetchall()
             questions_no = len(questions_table)
             questions_id = random.sample(range(questions_no),3)
-            
-            # get last sessionQues_id
-            if use_database:
-                sql_getSessionQuesID = "select * from Session_question order by sessionQuesID desc limit 1"
-                cursor.execute(sql_getSessionQuesID)
-                results = cursor.fetchall()[0]
-                sessionQues_id = results[0]
-            else:
-                sessionQues_id = 0
-            
-            global sessionQues
-            sessionQues = [str(int(sessionQues_id)+1),str(int(sessionQues_id)+2),str(int(sessionQues_id)+3)]
-            if print_stuff: print("<<<<<<<<<<<<<<<<")
-            if print_stuff: print(sessionQues)
 
             # Store the questions for the session
             for seq in range(3):
@@ -110,8 +108,7 @@ def db_get_input():
 
 # Process the results from index.html
 def db_store_results(session_id,log_affdex,log_xlabs,log_events):
-    #try:
-    if True:
+    try:
         sessionid = str(session_id)
 
         # =========== Write Table LogEvent ===========
@@ -250,7 +247,7 @@ def db_store_results(session_id,log_affdex,log_xlabs,log_events):
 
             db.commit()
 
-    if False:
+    except:
         if use_database:
             db.rollback()
         if print_stuff: print("So sad..................")
