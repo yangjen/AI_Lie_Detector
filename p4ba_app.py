@@ -1,9 +1,9 @@
 from flask import Flask, request, jsonify, render_template, make_response, session
-from random import randint
 import time
 
 import db_func
 import local_func
+import predictor
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -15,7 +15,7 @@ app.config['SECRET_KEY'] = 'WeXiLeDiJo'
 def html_test():
     #return render_template('test.html')
     session['session_id'], session['questions'] = db_func.db_get_input()
-    prediction = randint(1, 3)
+    prediction = predictor.which_is_lie_random()
     return render_template('results.html', questions=session['questions'], prediction=prediction)
 
 
@@ -40,14 +40,16 @@ def html_index_post():
     log_xlabs = log_xlabs.split('\r\n')
     log_events = log_events.split('\r\n')
 
-    db_func.db_store_results(session['session_id'],log_affdex,log_xlabs,log_events)
+    res_affdex = db_func.db_store_results(session['session_id'],log_affdex,log_xlabs,log_events)
     local_func.local_save(session['questions'],log_affdex,log_xlabs,log_events)
 
     # Wait for results
-    time.sleep(3)
+    #time.sleep(3)
 
     # Get the predicted value from the model
-    prediction = randint(1,3)
+    prediction = predictor.which_is_lie(res_affdex)
+
+    # Store the prediction
     db_func.db_store_prediction(session['session_id'],prediction)
 
     # Show the results page

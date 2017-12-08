@@ -100,6 +100,13 @@ def db_store_results(session_id,log_affdex,log_xlabs,log_events):
         # =========== Write Table LogEvent ok ===========
 
         # =========== Write Table Expression =============
+        # columns = "expTimestamp,sessionQuesID,gender,glasses,age,ethnicity,joy,sadness,disgust,contempt,anger,fear,surprise,valence,engagement,smile,innerBrowRaise,browRaise,browFurrow,noseWrinkle,upperLipRaise,lipCornerDepressor,chinRaise,lipPucker,lipPress,lipSuck,mouthOpen,smirk,eyeClosure,attention,lidTighten,jawDrop,dimpler,eyeWiden,cheekRaise,lipStretch"
+        columns = "sessionQuesID,expTimestamp,gender,glasses,age,ethnicity,joy,sadness,disgust,contempt,anger,fear,surprise,valence,engagement,smile,innerBrowRaise,browRaise,browFurrow,noseWrinkle,upperLipRaise,lipCornerDepressor,chinRaise,lipPucker,lipPress,lipSuck,mouthOpen,smirk,eyeClosure,attention,lidTighten,jawDrop,dimpler,eyeWiden,cheekRaise,lipStretch"
+
+        c = 0
+        res_affdex = []
+        res_affdex.append("#" + ',' + columns)
+
         log_affdex = log_affdex[:len(log_affdex)-1]
         for eachExpression in log_affdex:
             inside = re.findall('\{(.*)\}',eachExpression)[0]
@@ -111,7 +118,7 @@ def db_store_results(session_id,log_affdex,log_xlabs,log_events):
             # remove records before question1 starts and after question3 ends
             if expTimestamp<stamps[0] or expTimestamp>stamps[5]:
                 continue
-            eachExpression_data = eachExpression_data + [expTimestamp]
+            #eachExpression_data = eachExpression_data + [expTimestamp]
 
             if expTimestamp>=stamps[0] and expTimestamp<stamps[1]:
                 sessionQues_id = sessionQues[0]
@@ -120,6 +127,8 @@ def db_store_results(session_id,log_affdex,log_xlabs,log_events):
             if expTimestamp>=stamps[4] and expTimestamp<=stamps[5]:
                 sessionQues_id = sessionQues[2]
             eachExpression_data = eachExpression_data + [sessionQues_id]
+
+            eachExpression_data = eachExpression_data + [expTimestamp]
 
             appearance = split[2]
             appearance_var = appearance.split(',')
@@ -149,7 +158,12 @@ def db_store_results(session_id,log_affdex,log_xlabs,log_events):
                 else:
                     values_Expression=values_Expression+","+eachExpression_data[k]
             try:
-                sql_Expression = "INSERT INTO Expression(expTimestamp,sessionQuesID,gender,glasses,age,ethnicity,joy,sadness,disgust,contempt,anger,fear,surprise,valence,engagement,smile,innerBrowRaise,browRaise,browFurrow,noseWrinkle,upperLipRaise,lipCornerDepressor,chinRaise,lipPucker,lipPress,lipSuck,mouthOpen,smirk,eyeClosure,attention,lidTighten,jawDrop,dimpler,eyeWiden,cheekRaise,lipStretch) VALUES ("+ values_Expression +")"
+                # For the results
+                c += 1
+                res_affdex.append(str(c) + ',' + values_Expression)
+
+
+                sql_Expression = "INSERT INTO Expression(" + columns + ") VALUES ("+ values_Expression +")"
                 print("*********")
                 print(sql_Expression)
                 cursor.execute(sql_Expression)
@@ -199,8 +213,7 @@ def db_store_results(session_id,log_affdex,log_xlabs,log_events):
         print("So sad..................")
         #print("I received data from the session_id=",session_id)
 
-
-    return
+    return res_affdex
 
 # Store the prediction
 def db_store_prediction(session_id,prediction):
