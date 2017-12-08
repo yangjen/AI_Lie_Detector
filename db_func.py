@@ -3,7 +3,8 @@ import pymysql
 import re
 import time
 
-print_stuff = False
+print_stuff = True
+
 
 # Prepare the questions to send to index.html
 def db_get_input_csv():
@@ -17,10 +18,12 @@ def db_get_input_csv():
 
 use_database = True
 try:
+    if print_stuff: print("Im trying to connect...")
     db = pymysql.connect("localhost", "root", "weisi9527sj", "P5BA")
     use_database = True
 except:
     use_database = False
+print("use_database:",use_database)
 
 if use_database:
     cursor = db.cursor()
@@ -56,15 +59,27 @@ def db_get_input():
             questions_table = cursor.fetchall()
             questions_no = len(questions_table)
             questions_id = random.sample(range(questions_no),3)
+            
+            # get last sessionQues_id
+            if use_database:
+                sql_getSessionQuesID = "select * from Session_question order by sessionQuesID desc limit 1"
+                cursor.execute(sql_getSessionQuesID)
+                results = cursor.fetchall()[0]
+                sessionQues_id = results[0]
+            else:
+                sessionQues_id = 0
+            
+            global sessionQues
+            sessionQues = [str(int(sessionQues_id)+1),str(int(sessionQues_id)+2),str(int(sessionQues_id)+3)]
+            if print_stuff: print("<<<<<<<<<<<<<<<<")
+            if print_stuff: print(sessionQues)
 
             # Store the questions for the session
             for seq in range(3):
                 try:
                     question = str(questions_id[seq])
                     sequen = str(seq + 1)
-                    sql_prediction = "insert into Session_question(sessionQuesID,sessionID,questionID,sequence) values(" + \
-                                     sessionQues[
-                                         seq] + "," + session_id + "," + question + "," + sequen + ")"
+                    sql_prediction = "insert into Session_question(sessionQuesID,sessionID,questionID,sequence) values(" + sessionQues[seq] + "," + session_id + "," + question + "," + sequen + ")"
                     if print_stuff: print(sql_prediction)
                     cursor.execute(sql_prediction)
                     db.commit()
@@ -98,20 +113,6 @@ def db_store_results(session_id,log_affdex,log_xlabs,log_events):
     #try:
     if True:
         sessionid = str(session_id)
-
-        # get sessionQues_id
-        if use_database:
-            sql_getSessionQuesID = "select * from Session_question order by sessionQuesID desc limit 1"
-            cursor.execute(sql_getSessionQuesID)
-            results = cursor.fetchall()[0]
-            sessionQues_id = results[0]
-        else:
-            sessionQues_id = 0
-
-        global sessionQues
-        sessionQues = [str(int(sessionQues_id)+1),str(int(sessionQues_id)+2),str(int(sessionQues_id)+3)]
-        if print_stuff: print("<<<<<<<<<<<<<<<<")
-        if print_stuff: print(sessionQues)
 
         # =========== Write Table LogEvent ===========
         try:
