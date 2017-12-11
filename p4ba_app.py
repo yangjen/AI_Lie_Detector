@@ -4,6 +4,7 @@ import time
 import db_func
 import local_func
 import predictor
+import lie_detector
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -47,7 +48,7 @@ def html_index_post():
     #time.sleep(3)
 
     # Get the predicted value from the model
-    prediction = predictor.which_is_lie(res_affdex)
+    prediction = lie_detector.predict_lie(res_affdex)
 
     # Store the prediction
     db_func.db_store_prediction(session['session_id'],prediction)
