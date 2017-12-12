@@ -1,0 +1,9 @@
+{"timestamp":1512135302804,"event":"survey_start"}
+{"timestamp":1512135305820,"event":"question_1_start"}
+{"timestamp":1512135315819,"event":"question_1_ends"}
+{"timestamp":1512135318819,"event":"question_2_start"}
+{"timestamp":1512135328821,"event":"question_2_ends"}
+{"timestamp":1512135331819,"event":"question_3_start"}
+{"timestamp":1512135341820,"event":"question_3_ends"}
+{"timestamp":1512135341820,"event":"survey_end"}
+

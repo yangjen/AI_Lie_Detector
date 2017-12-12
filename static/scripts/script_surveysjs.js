@@ -20,7 +20,7 @@ var comment_div = "<div><center><h3 id='comment'>" + comment_wait + "</h3></cent
 
 // Survey
 var json = {
-    //showNavigationButtons: false,
+    showNavigationButtons: false,
     //showProgressBar: "bottom",
     //showTimerPanel: "bottom",
     //maxTimeToFinishPage: 3+10,
