@@ -71,5 +71,6 @@ def html_results():
 
 
 if __name__ == "__main__":
+    lie_detector.training()
     app.run(port=5000, host='0.0.0.0')
 
