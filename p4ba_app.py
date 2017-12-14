@@ -16,7 +16,7 @@ def html_test():
     #return render_template('test.html')
     session['session_id'], session['questions'] = db_func.db_get_input()
     prediction = randint(1,3)
-    return render_template('results.html', questions=session['questions'], prediction=prediction)
+    return render_template('results.html', questions=session['questions'], prediction=prediction, testing=True)
 
 
 @app.route("/", methods=["GET"])
@@ -46,15 +46,18 @@ def html_index_post():
     if not use_database: local_func.local_save(session['session_id'],log_affdex,log_xlabs,log_events,session['questions'])
 
     # Get the predicted value from the model
-    #prediction = randint(1, 3)
-    prediction = lie_detector.predict_lie(res_affdex)
+    prediction = randint(1, 3)
+    try:
+        prediction = lie_detector.predict_lie(res_affdex)
+    except:
+        print("lie_detector.predict_lie()...")
 
     # Store the prediction
     db_func.db_store_prediction(session['session_id'],prediction)
 
     # Show the results page
     #return make_response(jsonify("do nothing for now")), 204
-    return render_template('results.html', questions=session['questions'], prediction=prediction)
+    return render_template('results.html', questions=session['questions'], prediction=prediction, testing=False)
 
 
 @app.route("/results_post", methods = ["POST"])
@@ -71,6 +74,16 @@ def html_results():
 
 
 if __name__ == "__main__":
-    lie_detector.training()
-    app.run(port=5000, host='0.0.0.0')
+    try:
+        lie_detector.training()
+    except:
+        print("lie_detector.training()...")
+
+    # Try to run with SSL - pip3 install pyopenssl
+    # If not, run it without SSL
+    try:
+        import OpenSSL
+        app.run(port=5000, host='0.0.0.0', ssl_context='adhoc')
+    except:
+        app.run(port=5000, host='0.0.0.0')
 

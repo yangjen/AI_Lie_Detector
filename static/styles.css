@@ -3,3 +3,8 @@ button.btn {
     height: 200px;
     white-space: normal;
 }
+
+#btn_try_again {
+    height: 40px;
+    width: 100px;
+}

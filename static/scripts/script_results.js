@@ -27,13 +27,26 @@ function btn_result_click(clicked_id) {
             document.getElementById("res_comment").textContent = ":(";
         };
 
+        // Show the try_again button
+        document.getElementById("try_again").style.display = "inline";
+
         // Send the new label to the python
-        $("#log_res").html(clicked_id.substring(clicked_id.length-1,clicked_id.length));
-        setTimeout(
-            function() {
-                document.getElementById("res_form").submit();
-            }, 1000);
+        if (!myTesting) {
+            $("#log_res").html(clicked_id.substring(clicked_id.length-1,clicked_id.length));
+            setTimeout(
+                function() {
+                    document.getElementById("res_form").submit();
+                }, 1000);
+        };
 
         user_clicked = true;
+    };
+};
+
+function btn_try_again_click() {
+    if (!myTesting) {
+        window.location.href="/";
+    } else{
+        window.location.href="/test";
     };
 };
