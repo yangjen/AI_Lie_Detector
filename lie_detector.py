@@ -12,6 +12,7 @@ def training():
 	from sklearn.svm import SVC
 	import pickle
 	from sklearn.ensemble import AdaBoostClassifier
+	from sklearn.linear_model import LogisticRegression
 
 	Event = pd.read_csv('model/EventTable.csv')
 	Expression = pd.read_csv('model/ExpressionTable.csv')
