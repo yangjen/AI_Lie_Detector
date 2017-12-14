@@ -3,7 +3,7 @@ from random import randint
 
 import db_func
 import local_func
-#import lie_detector
+import lie_detector
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'WeXiLeDiJo'
@@ -46,8 +46,8 @@ def html_index_post():
     if not use_database: local_func.local_save(session['session_id'],log_affdex,log_xlabs,log_events,session['questions'])
 
     # Get the predicted value from the model
-    prediction = randint(1, 3)
-    #prediction = lie_detector.predict_lie(res_affdex)
+    rediction = randint(1, 3)
+    prediction = lie_detector.predict_lie(res_affdex)
 
     # Store the prediction
     db_func.db_store_prediction(session['session_id'],prediction)
