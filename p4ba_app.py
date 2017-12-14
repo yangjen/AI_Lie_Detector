@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template, make_response, session
 from random import randint
+import sys
 
 import db_func
 import local_func
@@ -79,11 +80,12 @@ if __name__ == "__main__":
     except:
         print("lie_detector.training()...")
 
-    # Try to run with SSL - pip3 install pyopenssl
-    # If not, run it without SSL
+    # To use SSL (https):
+    #   1. pip3 install pyopenssl
+    #   2. run this file with "ssl" as argument: python3 p4ba_app.py ssl
     try:
+        if (sys.argv[1].lower() != "ssl"): raise Exception("I don't want to use SSL")
         import OpenSSL
         app.run(port=5000, host='0.0.0.0', ssl_context='adhoc')
     except:
         app.run(port=5000, host='0.0.0.0')
-
