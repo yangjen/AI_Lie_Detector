@@ -46,7 +46,7 @@ def html_index_post():
     if not use_database: local_func.local_save(session['session_id'],log_affdex,log_xlabs,log_events,session['questions'])
 
     # Get the predicted value from the model
-    rediction = randint(1, 3)
+    #prediction = randint(1, 3)
     prediction = lie_detector.predict_lie(res_affdex)
 
     # Store the prediction
