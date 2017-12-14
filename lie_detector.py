@@ -11,6 +11,7 @@ def training():
 	from sklearn.model_selection import KFold
 	from sklearn.svm import SVC
 	import pickle
+	from sklearn.ensemble import AdaBoostClassifier
 
 	Event = pd.read_csv('model/EventTable.csv')
 	Expression = pd.read_csv('model/ExpressionTable.csv')
