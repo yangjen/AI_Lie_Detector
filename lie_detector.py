@@ -44,11 +44,11 @@ def training():
     from sklearn.ensemble import AdaBoostClassifier
     from sklearn.linear_model import LogisticRegression
 
-    Event = pd.read_csv('model/EventTable.csv')
-    Expression = pd.read_csv('model/ExpressionTable.csv')
-    Gaze = pd.read_csv('model/GazeTable.csv')
-    session_question = pd.read_csv('model/sessionQuestion.csv')
-    session = pd.read_csv('model/sessionTable.csv')
+    Event = pd.read_csv(os.path.join("model","EventTable.csv"))
+    Expression = pd.read_csv(os.path.join("model","ExpressionTable.csv"))
+    Gaze = pd.read_csv(os.path.join("model","GazeTable.csv"))
+    session_question = pd.read_csv(os.path.join("model","sessionQuestion.csv"))
+    session = pd.read_csv(os.path.join("model","sessionTable.csv"))
 
     X = clean_x(Expression)
     Y = np.array(clean_y(session_question))
@@ -141,7 +141,10 @@ def training():
 
     print("Saving the model...")
 
-    pickle_out = open("model/model.pickle",'wb')
+    if not os.path.exists(os.path.join(os.getcwd(),"model")):
+        os.makedirs(os.path.join(os.getcwd(),"model"))
+
+    pickle_out = open(os.path.join("model","model.pickle"),'wb')
     pickle.dump(dic[index_min], pickle_out)
     pickle_out.close()
 
@@ -149,18 +152,23 @@ def training():
     print("Done!")
     print("")
 
+    return
+
 
 # # RESULTS
 def predict_lie(x_user):
-    variable = open('model/x_user.csv',"w")
+    if not os.path.exists(os.path.join(os.getcwd(),"model")):
+        os.makedirs(os.path.join(os.getcwd(),"model"))
+
+    variable = open(os.path.join("model","x_user.csv"),"w")
     for row in x_user: variable.write(row + "\n")
     variable.close()
-    x_user2 = pd.read_csv('model/x_user.csv')
-    os.remove('model/x_user.csv')
+    x_user2 = pd.read_csv(os.path.join("model","x_user.csv"))
+    os.remove(os.path.join("model","x_user.csv"))
 
     X_TEST = clean_x(x_user2)
 
-    pickle_in = open("model/model.pickle",'rb')
+    pickle_in = open(os.path.join("model","model.pickle"),'rb')
     clf_pred = pickle.load(pickle_in)
     pickle_in.close()
 

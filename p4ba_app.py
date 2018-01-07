@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template, make_response, session
 from random import randint
 import sys
+import os
 
 import db_func
 import local_func
@@ -76,13 +77,21 @@ def html_results():
 
 if __name__ == "__main__":
     try:
-        lie_detector.training()
+        # Because of how different versions of python work on different systems, is not possible to
+        # use pickle to save the trained model in one system and load it in another system.
+        # Because of this, for now we are not saving into github the pickle model.
+        # Therefore, if you just downloaded our code you will need to train the model.
+        # And since we have a small amount of training data, the training of the model should be fast.
+        # After that, there will be no need to train it again in this same system.
+        if not os.path.isfile(os.path.join("model", "model.pickle")):
+            lie_detector.training()
     except:
         print("lie_detector.training()...")
 
     # To use SSL (https):
     #   1. pip3 install pyopenssl
-    #   2. run this file with "ssl" as argument: python3 p4ba_app.py ssl
+    #   2. run this file with "ssl" as argument:
+    #      python3 p4ba_app.py ssl
     try:
         if (sys.argv[1].lower() != "ssl"): raise Exception("I don't want to use SSL")
         import OpenSSL
